@@ -1,19 +1,24 @@
-<script setup></script>
+<script setup>
+import { RouterLink } from "vue-router";
+</script>
 
 <template>
   <section>
     <div class="container m-auto py-6 px-6">
-      <a
-        href="jobs.html"
-        class="text-green-500 hover:text-green-600 flex items-center"
+      <RouterLink
+        to="/jobs"
+        class="text-green-500 hover:text-green-600 flex items-center gap-2 group"
       >
-        <i class="fas fa-arrow-left mr-2"></i> Back to Job Listings
-      </a>
+        <i
+          class="pi pi-chevron-left text-sm group-hover:-translate-x-1 transition-all duration-300"
+        ></i>
+        <span class="">Back to Job Listings</span>
+      </RouterLink>
     </div>
   </section>
   <section class="bg-green-50">
     <div class="container m-auto py-10 px-6">
-      <div class="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-6">
         <main>
           <div
             class="bg-white p-6 rounded-lg shadow-md text-center md:text-left"
