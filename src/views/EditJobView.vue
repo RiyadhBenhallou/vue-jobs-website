@@ -1,13 +1,16 @@
 <script setup>
-import { reactive } from "vue";
+import { onMounted, reactive } from "vue";
 import JobListing from "../components/ui/JobListing.vue";
 import axios from "axios";
 import router from "../router";
 import { useToast } from "vue-toastification";
+import { useRoute } from "vue-router";
 
 const toast = useToast();
+const route = useRoute();
+const jobId = route.params.id;
 
-const form = reactive({
+let form = reactive({
   type: "",
   title: "",
   description: "",
@@ -22,12 +25,18 @@ const form = reactive({
 });
 
 const handleSubmit = async () => {
-  const newJob = { ...form };
-  const { data: job } = await axios.post("http://localhost:5000/jobs", newJob);
-  router.push(`/jobs/${job.id}`);
-  toast("Job added successfully!");
-  console.log(newJob);
+  const editedJob = { ...form };
+  const { data: job } = await axios.put(`http://localhost:5000/jobs/${jobId}`, {
+    ...editedJob,
+  });
+  router.push(`/jobs/${jobId}`);
+  toast("Job edited successfully!");
 };
+
+onMounted(async () => {
+  const response = await axios.get(`http://localhost:5000/jobs/${jobId}`);
+  Object.assign(form, response.data);
+});
 </script>
 
 <template>
@@ -37,7 +46,7 @@ const handleSubmit = async () => {
         class="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0"
       >
         <form @submit.prevent="handleSubmit()">
-          <h2 class="text-3xl text-center font-semibold mb-6">Add Job</h2>
+          <h2 class="text-3xl text-center font-semibold mb-6">Edit Job</h2>
 
           <div class="mb-4">
             <label for="type" class="block text-gray-700 font-bold mb-2"
@@ -192,7 +201,7 @@ const handleSubmit = async () => {
               class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
               type="submit"
             >
-              Add Job
+              Edit Job
             </button>
           </div>
         </form>
