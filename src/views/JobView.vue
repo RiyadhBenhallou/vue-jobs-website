@@ -2,6 +2,10 @@
 import axios from "axios";
 import { onMounted, reactive } from "vue";
 import { RouterLink, useRoute } from "vue-router";
+import router from "../router";
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
 
 const state = reactive({
   job: {},
@@ -11,6 +15,12 @@ const state = reactive({
 const route = useRoute();
 
 const jobId = route.params.id;
+
+const deleteJob = async () => {
+  await axios.delete(`http://localhost:5000/jobs/${jobId}`);
+  router.push("/jobs");
+  toast("User deleted succesffully!");
+};
 
 onMounted(async () => {
   try {
@@ -106,6 +116,7 @@ onMounted(async () => {
               >Edit Job</RouterLink
             >
             <button
+              @click="deleteJob()"
               class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
             >
               Delete Job

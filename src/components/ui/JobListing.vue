@@ -27,6 +27,8 @@ const truncatedDescription = computed(() => {
     return description;
   }
 });
+
+
 </script>
 
 <template>
